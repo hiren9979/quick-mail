@@ -1,0 +1,32 @@
+<div class="form-container">
+    <h2>Send Email</h2>
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Recipient Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="Enter recipient's email">
+        <mat-error *ngIf="emailForm.get('email')?.hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="emailForm.get('email')?.hasError('email')">Please enter a valid email</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Select Template</mat-label>
+        <mat-select formControlName="template">
+          <mat-option *ngFor="let template of templates" [value]="template.id">
+            {{template.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="emailForm.get('template')?.hasError('required')">Template selection is required</mat-error>
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!emailForm.valid || isLoading">
+          <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+          <span *ngIf="!isLoading">Send Email</span>
+          <span *ngIf="isLoading">Sending...</span>
+        </button>
+        <button mat-raised-button color="accent" type="button" routerLink="/templates">
+          Manage Templates
+        </button>
+      </div>
+    </form>
+  </div>
